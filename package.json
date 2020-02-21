@@ -1,0 +1,25 @@
+{
+  "name": "@fitch-digital/fitch-create-app",
+  "description": "Boilerplate templates for FITCH projects",
+  "author": "FITCH",
+  "version": "1.0.1",
+  "license": "ISC",
+  "preferGlobal": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "fitch",
+    "template"
+  ],
+  "bin": {
+    "fitch-create-app": "./bin/fitch-create-app.bin.js"
+  },
+  "dependencies": {
+    "cli-color": "^2.0.0",
+    "colors": "^1.4.0",
+    "ncp": "^2.0.0",
+    "prompt": "^1.0.0",
+    "walk": "^2.3.14"
+  }
+}

@@ -4,11 +4,11 @@ react template
 
 ## Development
 
-`npm start` will kick start an instance of webpack-dev-server and an instance of an express server that can be used for api's or sockets.
+`npm start` will kick start an instance of webpack-dev-server and an instance of an hapi server that can be used for api's or sockets.
 
 ## Production
 
-`npm run build` will build a version to `/build` folder. you can run `npm run serve` to use the express server to statically serve the files.
+`npm run build` will build a version to `/build` folder. you can run `npm run serve` to use the hapi server to statically serve the files.
 
 ## Integration with Heroku
 

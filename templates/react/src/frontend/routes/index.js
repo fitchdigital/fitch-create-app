@@ -1,13 +1,15 @@
 import React from 'react';
+import { HomePage } from 'app/pages/home';
+import { AboutPage } from 'app/pages/about';
 
 export const routes = [
     {
         path: '/',
         exact: true,
-        child: <h2>Homepage</h2>,
+        child: <HomePage />,
     },
     {
         path: '/about',
-        child: <h2>About</h2>,
+        child: <AboutPage />,
     },
 ];

@@ -1,28 +1,34 @@
 import React from 'react';
 import { renderToNodeStream } from 'react-dom/server';
 import { HelmetProvider } from 'react-helmet-async';
+import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router-dom';
 import { printDrainHydrateMarks } from 'react-imported-component';
 import through from 'through';
 import { PassThrough } from 'stream';
-import Application from '../../app/application';
+import configure, {
+    makeStateImmutable,
+    rootSaga,
+    actionAppInit,
+} from 'app/store/config';
+import Application from 'app/application';
 import { getHTMLFragments } from './client';
-// import { getDataFromTree } from 'react-apollo';
 
-const getApplicationStream = (originalUrl, context) => {
+// max time allowed for SSR before bailing
+const SSR_TIMEOUT = 5000;
+
+const getApplicationStream = (store, originalUrl, context) => {
     const helmetContext = {};
     const app = (
         <HelmetProvider context={helmetContext}>
-            <StaticRouter location={originalUrl} context={context}>
-                <Application />
-            </StaticRouter>
+            <Provider store={store}>
+                <StaticRouter location={originalUrl} context={context}>
+                    <Application />
+                </StaticRouter>
+            </Provider>
         </HelmetProvider>
     );
 
-    // const sheet = new ServerStyleSheet()
-    // return sheet.interleaveWithNodeStream(
-    //   renderToNodeStream(sheet.collectStyles(app))
-    // )
     return renderToNodeStream(app);
 };
 
@@ -38,38 +44,76 @@ export const end = endingHTMLFragment =>
 
 export const ssr = getApplicationStream => (request, h) => {
     const before = Date.now();
+
+    // initial state
+    const api = process.env.API || 'http://localhost:1234';
+    const initialState = makeStateImmutable({
+        application: { api },
+    });
+
+    // create redux store
+    const store = configure({
+        initialState,
+    });
+
     return new Promise((resolve, reject) => {
         try {
-            const pathname = request.url.pathname;
-            // If you were using Apollo, you could fetch data with this
-            // await getDataFromTree(app);
-            const context = {};
-            const stream = getApplicationStream(pathname, context);
+            // let redux initial saga do all the calls it needs
+            let timeout = null;
 
-            if (context.url) {
-                h.redirect(context.url).code(301);
-            }
+            let unsubscribe = () => null;
+            const onStoreEvents = () => {
+                const state = store.getState();
+                if (state.application.toJS().ready) {
+                    unsubscribe();
+                    clearTimeout(timeout);
 
-            const [startingHTMLFragment, endingHTMLFragment] = getHTMLFragments(
-                {
-                    drainHydrateMarks: printDrainHydrateMarks(),
+                    // once the saga is done, handle SSR
+                    const pathname = request.url.pathname;
+                    const context = {};
+                    const stream = getApplicationStream(
+                        store,
+                        pathname,
+                        context
+                    );
+
+                    const [
+                        startingHTMLFragment,
+                        endingHTMLFragment,
+                    ] = getHTMLFragments({
+                        state,
+                        drainHydrateMarks: printDrainHydrateMarks(),
+                    });
+
+                    console.log(
+                        `Route "${pathname}" generated in ${Date.now() -
+                            before}ms`
+                    );
+
+                    const res = new PassThrough();
+                    res.write(startingHTMLFragment);
+                    stream
+                        .pipe(through(write, end(endingHTMLFragment)))
+                        .pipe(res);
+
+                    resolve(
+                        h
+                            .response(res)
+                            .type('text/html')
+                            .code(200)
+                    );
                 }
-            );
+            };
 
-            console.log(
-                `Route "${pathname}" generated in ${Date.now() - before}ms`
-            );
+            timeout = setTimeout(() => {
+                console.log('Request Timeout');
+                reject(h.code(408));
+            }, SSR_TIMEOUT);
 
-            const res = new PassThrough();
-            res.write(startingHTMLFragment);
-            stream.pipe(through(write, end(endingHTMLFragment))).pipe(res);
-
-            resolve(
-                h
-                    .response(res)
-                    .type('text/html')
-                    .code(200)
-            );
+            unsubscribe = store.subscribe(onStoreEvents);
+            store.runSaga(rootSaga).done; // eslint-disable-line
+            store.dispatch(actionAppInit(request.url.pathname));
+            store.close();
         } catch (e) {
             reject(h.code(500));
         }

@@ -2,6 +2,17 @@
     "plugins": [
         [
             "react-imported-component/babel"
+        ],
+        [
+            "module-resolver",
+            {
+                "root": [
+                    "./src"
+                ],
+                "alias": {
+                    "app": "./app",
+                }
+            }
         ]
     ],
     "env": {

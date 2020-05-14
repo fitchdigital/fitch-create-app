@@ -6,7 +6,7 @@ describe('app/pages/about', () => {
     it('renders About page', () => {
         expect(About).toBeDefined();
         const tree = shallow(<About />);
-        expect(tree.find('Page')).toBeDefined();
+        expect(tree.find('div')).toBeDefined();
         expect(
             tree
                 .find('Helmet')

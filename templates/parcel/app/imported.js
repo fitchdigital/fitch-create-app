@@ -12,7 +12,7 @@
     // 2) use file filter to ignore specific locations (refer to the README)
     
     const applicationImports = assignImportedComponents([
-           [() => import('./pages/about'), '', './app/pages/about', false],
+           [() => import('app/pages/about'), '', 'app/pages/about', false],
     ]);
     
     export default applicationImports;

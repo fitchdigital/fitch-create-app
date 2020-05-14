@@ -2,12 +2,10 @@
     "name": "--TITLE--",
     "version": "1.0.0",
     "description": "--DESCRIPTION--",
-    "main": "index.js",
     "scripts": {
-        "dev": "npm run generate-imported-components && parcel app/index.html --hmr-port 1235",
-        "dev:server": "nodemon -e js,jsx,html --ignore dist --ignore app/imported.js --exec \"npm run build && npm run start\"",
+        "app:dev": "npm run generate-imported-components && parcel app/index.html --hmr-port 1235",
+        "server:dev": "nodemon -e js,jsx,html --ignore dist --ignore app/imported.js --exec \"npm run build && npm run start\"",
         "lint": "prettier-standard 'app/**/*.js' 'app/**/*.jsx' 'server/**/*.js' --lint",
-        "lint:fix": "prettier-standard 'app/**/*.js' 'app/**/*.jsx' 'server/**/*.js' --lint --fix",
         "format": "prettier-standard 'app/**/*.js' 'app/**/*.jsx' 'server/**/*.js' --format",
         "build": "rimraf dist && npm run generate-imported-components && npm run create-bundles",
         "build:nginx": "rimraf dist && npm run generate-imported-components && npm run create-bundle:nginx",
@@ -17,12 +15,12 @@
         "create-bundle:server": "cross-env BABEL_ENV=server parcel build server/index.js -d dist/server --public-url /dist --target=node",
         "generate-imported-components": "imported-components app app/imported.js",
         "start": "node dist/server",
-        "test": "cross-env BABEL_ENV=test jest --silent --config jest.json",
-        "test:watch": "cross-env BABEL_ENV=test jest --config jest.json --watch"
+        "test": "cross-env BABEL_ENV=test jest --silent --config jest.json"
     },
     "lint-staged": {
         "*": ["prettier-standard --lint", "git add"]
     },
+    "browserslist": ["last 1 Chrome versions"],
     "husky": {
         "hooks": {
             "pre-commit": "lint-staged && npm run test"

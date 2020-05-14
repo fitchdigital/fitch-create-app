@@ -1,1 +1,1 @@
-@hapi/hapi @hapi/inert express pino react react-dom react-helmet-async react-imported-component react-router react-router-dom sass through
+@hapi/hapi @hapi/inert axios connected-react-router express history immutable immutable-devtools prop-types react react-dom react-helmet-async react-imported-component react-redux react-router react-router-dom redux redux-saga sass serialize-javascript through

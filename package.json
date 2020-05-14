@@ -2,7 +2,7 @@
   "name": "@fitch-digital/fitch-create-app",
   "description": "Boilerplate templates for FITCH projects",
   "author": "FITCH",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "license": "ISC",
   "preferGlobal": true,
   "scripts": {
@@ -11,15 +11,16 @@
   "keywords": [
     "fitch",
     "template",
-    "react"
+    "react",
+    "webpack",
+    "parcel"
   ],
   "bin": {
     "fitch-create-app": "./bin/fitch-create-app.bin.js"
   },
   "dependencies": {
-    "cli-color": "^2.0.0",
     "colors": "^1.4.0",
-    "ncp": "^2.0.0",
+    "ora": "^4.0.4",
     "prompt": "^1.0.0",
     "walk": "^2.3.14"
   }

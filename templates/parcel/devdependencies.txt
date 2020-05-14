@@ -1,0 +1,1 @@
+@babel/core @babel/plugin-syntax-dynamic-import @babel/polyfill @babel/preset-env @babel/preset-react babel-jest concurrently cross-env enzyme enzyme-adapter-react-16 husky jest lint-staged nodemon parcel-bundler prettier-standard react-hot-loader rimraf

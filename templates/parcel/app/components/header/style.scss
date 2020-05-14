@@ -1,0 +1,30 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1em 2rem;
+    z-index: 100;
+    border-bottom: 1px solid black;
+
+    nav {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        width: 50vw;
+
+        a {
+            margin-left: 2em;
+            text-decoration: none;
+            color: black;
+
+            &:hover,
+            &.active {
+                text-decoration: underline;
+            }
+        }
+    }
+}

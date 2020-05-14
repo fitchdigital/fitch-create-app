@@ -1,28 +1,19 @@
 import React from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
-import { routes } from 'app/routes';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import Home from 'app/pages/home';
+import About from 'app/pages/about';
 
-export const Application = () => {
+const Application = () => {
     return (
         <>
-            <nav>
-                {routes.map(route => (
-                    <Link key={`nav-${route.path}`} to={route.path}>
-                        {route.path}
-                    </Link>
-                ))}
-            </nav>
+            <Header />
             <Switch>
-                {routes.map(route => (
-                    <Route
-                        key={`component-${route.path}`}
-                        path={route.path}
-                        exact={route.exact}
-                    >
-                        {route.child}
-                    </Route>
-                ))}
+                <Route exact path='/' component={Home} />
+                <Route exact path='/about' component={About} />
+                <Redirect to='/' />
             </Switch>
         </>
     );
 };
+
+export default Application;

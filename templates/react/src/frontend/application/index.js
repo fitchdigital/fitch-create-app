@@ -1,7 +1,8 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import Home from 'app/pages/home';
-import About from 'app/pages/about';
+import Header from 'app/components/header';
+import Home from 'app/pages/home/';
+import About from 'app/pages/about/index.jsx';
 
 const Application = () => {
     return (

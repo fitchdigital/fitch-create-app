@@ -17,6 +17,7 @@ module.exports = {
         alias: {
             app: PATH_SOURCE,
         },
+        extensions: ['.js', '.jsx'],
     },
 
     optimization: {

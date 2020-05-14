@@ -2,19 +2,13 @@
   "name": "@fitch-digital/fitch-create-app",
   "description": "Boilerplate templates for FITCH projects",
   "author": "FITCH",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "ISC",
   "preferGlobal": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "fitch",
-    "template",
-    "react",
-    "webpack",
-    "parcel"
-  ],
+  "keywords": ["fitch", "template", "react", "webpack", "parcel"],
   "bin": {
     "fitch-create-app": "./bin/fitch-create-app.bin.js"
   },
